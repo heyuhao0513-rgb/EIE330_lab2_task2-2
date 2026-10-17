@@ -1,0 +1,64 @@
+#! /usr/bin/vvp
+:ivl_version "11.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/system.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/vhdl_sys.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/vhdl_textio.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/v2005_math.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/va_math.vpi";
+S_0x585f3d4ffdf0 .scope module, "running_light" "running_light" 2 3;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 1 "sys_clk";
+    .port_info 1 /INPUT 1 "sys_rst_n";
+    .port_info 2 /OUTPUT 4 "led_out";
+P_0x585f3d5246a0 .param/l "CNT_WIDTH" 1 2 11, +C4<00000000000000000000000000011001>;
+P_0x585f3d5246e0 .param/l "COUNT_MAX" 0 2 4, +C4<00000001011111010111100001000000>;
+v0x585f3d5000c0_0 .var "cnt", 24 0;
+v0x585f3d54a0f0_0 .var "led_out", 3 0;
+o0x7f061d59f078 .functor BUFZ 1, C4<z>; HiZ drive
+v0x585f3d54a1d0_0 .net "sys_clk", 0 0, o0x7f061d59f078;  0 drivers
+o0x7f061d59f0a8 .functor BUFZ 1, C4<z>; HiZ drive
+v0x585f3d54a2a0_0 .net "sys_rst_n", 0 0, o0x7f061d59f0a8;  0 drivers
+E_0x585f3d500590/0 .event negedge, v0x585f3d54a2a0_0;
+E_0x585f3d500590/1 .event posedge, v0x585f3d54a1d0_0;
+E_0x585f3d500590 .event/or E_0x585f3d500590/0, E_0x585f3d500590/1;
+    .scope S_0x585f3d4ffdf0;
+T_0 ;
+    %wait E_0x585f3d500590;
+    %load/vec4 v0x585f3d54a2a0_0;
+    %nor/r;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.0, 8;
+    %pushi/vec4 0, 0, 25;
+    %assign/vec4 v0x585f3d5000c0_0, 0;
+    %pushi/vec4 14, 0, 4;
+    %assign/vec4 v0x585f3d54a0f0_0, 0;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/vec4 v0x585f3d5000c0_0;
+    %pad/u 32;
+    %cmpi/e 24999999, 0, 32;
+    %jmp/0xz  T_0.2, 4;
+    %pushi/vec4 0, 0, 25;
+    %assign/vec4 v0x585f3d5000c0_0, 0;
+    %load/vec4 v0x585f3d54a0f0_0;
+    %parti/s 3, 0, 2;
+    %load/vec4 v0x585f3d54a0f0_0;
+    %parti/s 1, 3, 3;
+    %concat/vec4; draw_concat_vec4
+    %assign/vec4 v0x585f3d54a0f0_0, 0;
+    %jmp T_0.3;
+T_0.2 ;
+    %load/vec4 v0x585f3d5000c0_0;
+    %addi 1, 0, 25;
+    %assign/vec4 v0x585f3d5000c0_0, 0;
+T_0.3 ;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "RTL/running_light.v";
